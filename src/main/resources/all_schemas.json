@@ -1,0 +1,812 @@
+{
+  "krux-send-to-dfp-params-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Send dfp behavior",
+    "id": "krux-send-to-dfp-params",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "kruxSegmentsObject",
+      "kruxUserObject",
+      "kruxLSIdData",
+      "kruxLSSegData",
+      "naveggLSData"
+    ],
+    "properties": {
+      "kruxSegmentsObject": {
+        "description": "Krux Segments Object",
+        "id": "kruxSegmentsObject",
+        "title": "krux segments object",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "kruxUserObject": {
+        "description": "Krux User Object",
+        "id": "kruxUserObject",
+        "title": "krux user object",
+        "type": "string"
+      },
+      "kruxLSIdData": {
+        "description": "Krux LS Id Data",
+        "id": "kruxLSIdData",
+        "title": "Krux LS ID data",
+        "type": "string"
+      },
+      "kruxLSSegData": {
+        "description": "Krux LS Seg Data",
+        "id": "kruxLSSegData",
+        "title": "Krux LS Seg data",
+        "type": "string"
+      },
+      "naveggLSData": {
+        "description": "Navegg LS Data",
+        "id": "naveggLSData",
+        "title": "Navegg LS data",
+        "type": "string"
+      }
+    }
+  },
+  "krux-pageview-params-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Send krux pageview parameters",
+    "id": "krux-pageview-params",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "kruxLocalStorageIdData",
+      "kruxLocalStorageSegData",
+      "naveggLocalStorageData"
+    ],
+    "properties": {
+      "kruxLocalStorageIdData": {
+        "description": "Krux Local Storage Data",
+        "id": "kruxLocalStorageIdData",
+        "title": "krux local storage id data",
+        "type": "string"
+      },
+      "kruxLocalStorageSegData": {
+        "description": "Krux Local Storage Seg Data",
+        "id": "kruxLocalStorageSegData",
+        "title": "krux local storage seg data",
+        "type": "string"
+      },
+      "naveggLocalStorageData": {
+        "description": "Navegg Local Storage Data",
+        "id": "naveggLocalStorageData",
+        "title": "navegg local storage data",
+        "type": "string"
+      }
+    }
+  },
+  "live-coverage-video-detach-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers actions on a detached video.",
+    "id": "live-coverage-video-detach",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "coverageId",
+      "eventType",
+      "timestamp"
+    ],
+    "properties": {
+      "coverageId": {
+        "description": "Unique coverage id from CMA that identifies it.",
+        "id": "coverageId",
+        "title": "coverageId",
+        "type": "string"
+      },
+      "eventType": {
+        "description": "The type of the event that is being triggered. It can be open, close, pause and mute.",
+        "id": "eventType",
+        "title": "eventType",
+        "type": "string"
+      },
+      "timestamp": {
+        "description": "The date and time the event was triggered.",
+        "id": "timestamp",
+        "title": "timestamp",
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  },
+  "live-coverage-timeline-view-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers the view time of a timeline.",
+    "id": "live-coverage-timeline-view",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "coverageId",
+      "viewTimeMs"
+    ],
+    "properties": {
+      "coverageId": {
+        "description": "Unique coverage id from CMA that identifies it.",
+        "id": "coverageId",
+        "title": "coverageId",
+        "type": "string"
+      },
+      "viewTimeMs": {
+        "description": "Cumulative time while the timeline is in the viewport.",
+        "id": "viewTimeMs",
+        "title": "viewTimeMs",
+        "type": "integer"
+      }
+    }
+  },
+  "live-coverage-push-update-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a live coverage push update.",
+    "id": "live-coverage-push-update",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "coverageId",
+      "pushType",
+      "pushAction"
+    ],
+    "properties": {
+      "coverageId": {
+        "description": "Unique coverage id from CMA that identifies it.",
+        "id": "coverageId",
+        "title": "coverageId",
+        "type": "string"
+      },
+      "pushType": {
+        "description": "The type of the push that is being received by the page. Accepted values are 'header' and 'timeline'.",
+        "id": "pushType",
+        "title": "pushType",
+        "type": "string",
+        "enum": [
+          "header",
+          "timeline"
+        ]
+      },
+      "pushAction": {
+        "description": "The action of the push that is being received by the page. Accepted values are 'title-change', 'subtitle-change', 'video-change', 'summary-change', 'post-add' and 'post-remove'.",
+        "id": "pushAction",
+        "title": "pushAction",
+        "type": "string",
+        "enum": [
+          "title-change",
+          "subtitle-change",
+          "video-change",
+          "summary-change",
+          "post-add",
+          "post-remove"
+        ]
+      }
+    }
+  },
+  "live-coverage-unload-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a live coverage unload.",
+    "id": "live-coverage-unload",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "coverageId",
+      "liveStatus"
+    ],
+    "properties": {
+      "coverageId": {
+        "description": "Unique coverage id from CMA that identifies it.",
+        "id": "coverageId",
+        "title": "coverageId",
+        "type": "string"
+      },
+      "liveStatus": {
+        "description": "The status of a live corage. TRUE for live, FALSE for not live.",
+        "id": "liveStatus",
+        "title": "liveStatus",
+        "type": "boolean"
+      }
+    }
+  },
+  "live-coverage-load-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a live coverage load.",
+    "id": "live-coverage-load",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "coverageId",
+      "datePublication",
+      "dateLastUpdate",
+      "dateLastLiveStatus",
+      "liveStatus",
+      "featuredContent",
+      "featuredContentType",
+      "summary"
+    ],
+    "properties": {
+      "coverageId": {
+        "description": "Unique coverage id from CMA that identifies it.",
+        "id": "coverageId",
+        "title": "coverageId",
+        "type": "string"
+      },
+      "datePublication": {
+        "description": "The date and time a coverage was first published.",
+        "id": "datePublication",
+        "title": "datePublication",
+        "type": "string",
+        "format": "date-time"
+      },
+      "dateLastUpdate": {
+        "description": "The last date and time a coverage was updated or had a post published.",
+        "id": "dateLastUpdate",
+        "title": "dateLastUpdate",
+        "type": "string",
+        "format": "date-time"
+      },
+      "dateLastLiveStatus": {
+        "description": "The last date and time a coverage was with live-status: TRUE.",
+        "id": "dateLastLiveStatus",
+        "title": "dateLastLiveStatus",
+        "type": [
+          "null",
+          "string"
+        ],
+        "format": "date-time"
+      },
+      "liveStatus": {
+        "description": "The status of a live corage. TRUE for live, FALSE for not live.",
+        "id": "liveStatus",
+        "title": "liveStatus",
+        "type": "boolean"
+      },
+      "featuredContent": {
+        "description": "The status of the featured content area. TRUE if there's something set, FALSE if there isn't.",
+        "id": "featuredContent",
+        "title": "featuredContent",
+        "type": "boolean"
+      },
+      "featuredContentType": {
+        "description": "What kind of featured content it is. i.e. video, image, score, null.",
+        "id": "featuredContentType",
+        "title": "featuredContentType",
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "summary": {
+        "description": "The status of the summary area. TRUE if there's any summary, FALSE if there isn't.",
+        "id": "summary",
+        "title": "summary",
+        "type": "boolean"
+      }
+    }
+  },
+  "live-coverage-post-view-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a live coverage post view.",
+    "id": "live-coverage-post-view",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "coverageId",
+      "id",
+      "viewport",
+      "timestamp",
+      "position",
+      "type",
+      "wordCount",
+      "elementCount",
+      "elementTypes"
+    ],
+    "properties": {
+      "coverageId": {
+        "description": "Unique coverage id from CMA that identifies it.",
+        "id": "coverageId",
+        "title": "coverageId",
+        "type": "string"
+      },
+      "id": {
+        "description": "Unique post id from CMA that identifies it.",
+        "id": "id",
+        "title": "id",
+        "type": "string"
+      },
+      "viewport": {
+        "description": "The timestamps of the element entering or exiting the viewport.",
+        "id": "viewport",
+        "title": "viewport",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "enter",
+          "exit"
+        ],
+        "properties": {
+          "enter": {
+            "description": "The timestamp of the element entering the viewport.",
+            "id": "enter",
+            "title": "enter",
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "exit": {
+            "description": "The timestamp of the element entering the viewport.",
+            "id": "exit",
+            "title": "exit",
+            "type": [
+              "null",
+              "integer"
+            ]
+          }
+        }
+      },
+      "timestamp": {
+        "description": "The date and time the element performed the action.",
+        "id": "timestamp",
+        "title": "timestamp",
+        "type": "integer"
+      },
+      "position": {
+        "description": "The position the post is currently being viewed in the timeline.",
+        "id": "position",
+        "title": "position",
+        "type": "integer"
+      },
+      "type": {
+        "description": "The type of the post that is currently being viewed. Accepted values are 'ad', 'twitter-subscription' and 'editorial'.",
+        "id": "type",
+        "title": "type",
+        "type": "string",
+        "enum": [
+          "ad",
+          "twitter-subscription",
+          "editorial"
+        ]
+      },
+      "wordCount": {
+        "description": "The quantity of words the currently being viewed post has.",
+        "id": "wordCount",
+        "title": "wordCount",
+        "type": "integer"
+      },
+      "elementCount": {
+        "description": "The quantity of elements the currently being viewed post has.",
+        "id": "elementCount",
+        "title": "elementCount",
+        "type": "integer"
+      },
+      "elementTypes": {
+        "description": "The types of the elements the currently being viewed post has.",
+        "id": "elementTypes",
+        "title": "elementTypes",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "feed-bastian-post-view-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a post view.",
+    "id": "feed-bastian-post-view",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "feedDisplayed",
+      "feedType",
+      "feedViewMs",
+      "postAuthor",
+      "postHasLink",
+      "postHasPhoto",
+      "postHasResumo",
+      "postHasVideo",
+      "postId",
+      "postTime",
+      "postPosition",
+      "postType",
+      "postUrl",
+      "postWasPromoted",
+      "postViewMs"
+    ],
+    "properties": {
+      "feedDisplayed": {
+        "description": "Whether the feed is displayed or not.",
+        "id": "feedDisplayed",
+        "title": "The feedDisplayed schema",
+        "type": "boolean"
+      },
+      "feedType": {
+        "description": "Feed type. Ex: COBERTURA, EDITORIAL, RECOMENDADO",
+        "id": "feedType",
+        "title": "The feedType schema",
+        "type": "string"
+      },
+      "feedViewMs": {
+        "description": "Feed view time (ms) until the event is sent.",
+        "id": "feedViewMs",
+        "title": "The feedViewMs schema",
+        "type": "string"
+      },
+      "postAuthor": {
+        "description": "Post author.",
+        "id": "postAuthor",
+        "title": "The postAuthor schema",
+        "type": "string"
+      },
+      "postHasLink": {
+        "default": false,
+        "description": "Whether the post has link or not.",
+        "id": "postHasLink",
+        "title": "The postHasLink schema",
+        "type": "string"
+      },
+      "postHasPhoto": {
+        "default": true,
+        "description": "Whether the post has a photo or not.",
+        "id": "postHasPhoto",
+        "title": "The postHasPhoto schema",
+        "type": "string"
+      },
+      "postHasResumo": {
+        "default": false,
+        "description": "Whether the post has a resumo or not.",
+        "id": "postHasResumo",
+        "title": "The postHasResumo schema",
+        "type": "string"
+      },
+      "postHasVideo": {
+        "default": false,
+        "description": "Whether the post has a video or not.",
+        "id": "postHasVideo",
+        "title": "The postHasVideo schema",
+        "type": "string"
+      },
+      "postId": {
+        "description": "Post ID.",
+        "id": "postId",
+        "title": "The postId schema",
+        "type": "string"
+      },
+      "postTime": {
+        "description": "Time the post was published.",
+        "id": "postTime",
+        "title": "The postTime schema",
+        "type": "string"
+      },
+      "postPosition": {
+        "description": "Position of the post in the feed.",
+        "id": "postPosition",
+        "title": "The postPosition schema",
+        "type": "string"
+      },
+      "postType": {
+        "description": "Informs the post content type.",
+        "id": "postType",
+        "title": "The postType schema",
+        "type": "string"
+      },
+      "postUrl": {
+        "description": "Post URL.",
+        "id": "postUrl",
+        "title": "The postUrl schema",
+        "type": "string"
+      },
+      "postWasPromoted": {
+        "description": "Whether the post was promoted or not.",
+        "id": "postWasPromoted",
+        "title": "The postWasPromoted schema",
+        "type": "string"
+      },
+      "postViewMs": {
+        "description": "Post view time (ms).",
+        "id": "postViewMs",
+        "title": "The postViewMs schema",
+        "type": "string"
+      }
+    }
+  },
+  "multicontent-chunk-view-2.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registra a visualiza\u00e7\u00e3o dos elementos do multicontent.",
+    "id": "multicontent-chunk-view",
+    "version": "2.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "chunkType",
+      "chunkPosition",
+      "pagePosition",
+      "viewedTimeMs",
+      "wordCount",
+      "height",
+      "width"
+    ],
+    "properties": {
+      "chunkType": {
+        "id": "chunkType",
+        "description": "Texto, foto, video ou ad.",
+        "title": "chunkType",
+        "type": "string"
+      },
+      "chunkPosition": {
+        "id": "chunkPosition",
+        "description": "Posi\u00e7\u00e3o do elemento na lista de chunks.",
+        "title": "chunkPosition",
+        "type": "integer"
+      },
+      "pagePosition": {
+        "id": "pagePosition",
+        "description": "Posi\u00e7\u00e3o do elemento na p\u00e1gina.",
+        "title": "pagePosition",
+        "type": "integer"
+      },
+      "viewedTimeMs": {
+        "id": "viewedTime",
+        "description": "Tempo gasto no elemento.",
+        "title": "viewedTime",
+        "type": "integer"
+      },
+      "wordCount": {
+        "id": "wordCount",
+        "description": "N\u00famero de palavras nesse chunk.",
+        "title": "wordCount",
+        "type": "integer"
+      },
+      "height": {
+        "id": "height",
+        "description": "Altura do elemento do DOM. In pixels.",
+        "title": "height",
+        "type": "integer"
+      },
+      "width": {
+        "id": "width",
+        "description": "Largura do elemento do DOM. In pixels.",
+        "title": "width",
+        "type": "integer"
+      }
+    }
+  },
+  "multicontent-load-2.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registra quando o multicontent foi carregado.",
+    "id": "multicontent-load",
+    "version": "2.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "multicontentId",
+      "datePublication",
+      "dateLastUpdate"
+    ],
+    "properties": {
+      "multicontentId": {
+        "description": "Id do elemento no CMA.",
+        "id": "multicontentId",
+        "title": "Id",
+        "type": "string"
+      },
+      "datePublication": {
+        "description": "Data de publica\u00e7\u00e3o do multicontent.",
+        "id": "datePublication",
+        "title": "datePublication",
+        "type": "string",
+        "format": "date-time"
+      },
+      "dateLastUpdate": {
+        "description": "\u00daltima data de publica\u00e7\u00e3o.",
+        "id": "dateLastUpdate",
+        "title": "dateLastUpdate",
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  },
+  "multicontent-element-click-2.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registra quando um elemento foi clicado.",
+    "id": "multicontent-element-click",
+    "version": "2.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "chunkType",
+      "chunkPosition",
+      "pagePosition",
+      "clickedTimestamp"
+    ],
+    "properties": {
+      "chunkType": {
+        "id": "chunkType",
+        "description": "Texto, foto, video ou ad.",
+        "title": "chunkType",
+        "type": "string"
+      },
+      "chunkPosition": {
+        "id": "chunkPosition",
+        "description": "Posi\u00e7\u00e3o do elemento na lista de chunks.",
+        "title": "chunkPosition",
+        "type": "integer"
+      },
+      "pagePosition": {
+        "id": "pagePosition",
+        "description": "Posi\u00e7\u00e3o do elemento na p\u00e1gina.",
+        "title": "pagePosition",
+        "type": "integer"
+      },
+      "clickedTimestamp": {
+        "description": "Timestamp de quando o evento aconteceu.",
+        "id": "clickedMs",
+        "title": "clickedMs",
+        "type": "integer"
+      }
+    }
+  },
+  "multicontent-view-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registra quando o multicontent foi carregado.",
+    "id": "multicontent-view",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "timeOnFeedMs",
+      "seenMulticontent",
+      "timeOnMulticontent"
+    ],
+    "properties": {
+      "timeOnFeedMs": {
+        "description": "Tempo gasto no feed em milisegundos.",
+        "id": "timeOnFeedMs",
+        "title": "Id",
+        "type": "integer"
+      },
+      "seenMulticontent": {
+        "description": "Usu\u00e1rio viu a publica\u00e7\u00e3o?",
+        "id": "seenMulticontent",
+        "title": "seenMulticontent",
+        "type": "boolean"
+      },
+      "timeOnMulticontent": {
+        "description": "Tempo gasto no multicontent em milisegundos.",
+        "id": "dateLastUpdate",
+        "title": "dateLastUpdate",
+        "type": "integer"
+      }
+    }
+  },
+  "generic-viewport-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers viewport dimensions and position.",
+    "id": "generic-viewport",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "width",
+      "height",
+      "x",
+      "y"
+    ],
+    "properties": {
+      "width": {
+        "description": "Viewport width.",
+        "id": "width",
+        "title": "width",
+        "type": "number"
+      },
+      "height": {
+        "description": "Viewport height.",
+        "id": "height",
+        "title": "height",
+        "type": "number"
+      },
+      "x": {
+        "description": "Viewport x (top left).",
+        "id": "x",
+        "title": "x",
+        "type": "number"
+      },
+      "y": {
+        "description": "Viewport y (top left).",
+        "id": "y",
+        "title": "y",
+        "type": "number"
+      }
+    }
+  },
+  "generic-click-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a click.",
+    "id": "generic-click",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "element",
+      "href"
+    ],
+    "properties": {
+      "element": {
+        "description": "Element that was clicked.",
+        "id": "element",
+        "title": "element",
+        "type": "string"
+      },
+      "href": {
+        "description": "Link for the click.",
+        "id": "href",
+        "title": "href",
+        "type": "string"
+      }
+    }
+  },
+  "generic-load-1.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers a url load.",
+    "id": "generic-load",
+    "version": "1.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "url"
+    ],
+    "properties": {
+      "url": {
+        "id": "element",
+        "title": "element",
+        "type": "string"
+      }
+    }
+  },
+  "globoplay-live-availability-2.0": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Registers the status availability status.",
+    "id": "globoplay-live-availability",
+    "version": "2.0",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "status",
+      "errorCode"
+    ],
+    "properties": {
+      "status": {
+        "description": "Live availability status",
+        "id": "status",
+        "title": "status",
+        "type": "string",
+        "enum": [
+          "available",
+          "unavailable",
+          "requires_geolocation",
+          "errored"
+        ]
+      },
+      "errorCode": {
+        "description": "The error code that occurred while checking availability.",
+        "id": "errorCode",
+        "title": "errorCode",
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    }
+  }
+}

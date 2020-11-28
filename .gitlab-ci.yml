@@ -1,0 +1,8 @@
+image: hseeberger/scala-sbt:8u141-jdk_2.12.3_0.13.16
+
+before_script:
+  - sbt clean compile
+
+unit-test:
+  script:
+    - sbt test
