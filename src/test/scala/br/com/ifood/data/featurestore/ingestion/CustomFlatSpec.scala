@@ -30,12 +30,17 @@ class CustomFlatSpec extends AnyFlatSpecLike with BeforeAndAfterAll {
     val expected = expectedDf.select(expectedDf.columns.min, expectedDf.columns.sorted.tail: _*)
 
     input.columns.deep shouldBe expected.columns.deep
+
+    input.count() shouldBe expected.count()
+    input.except(expected).count() shouldBe 0
+    expected.except(input).count() shouldBe 0
     input.collect should contain theSameElementsAs expected.collect
+
   }
 
-  def retrieveDataFrame(resource: String, spark: SparkSession): DataFrame = {
+  def retrieveDataFrameFromJson(resource: String, spark: SparkSession): DataFrame = {
     val json = getClass.getResource(s"/$suiteName/datasets/$resource").toString
-    spark.read.option("multiline", value = true).json(json)
+    spark.read.json(json)
   }
 
   def getResource(typeResource: String, resource: String): List[String] = {

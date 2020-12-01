@@ -23,6 +23,7 @@ object Settings {
   def tempDirectory: String = settings.get.getOptionValue("temp-dir")
 
   def streamType: String = settings.get.getOptionValue("stream-type", "order")
+  def triggerProcessTime: String = settings.get.getOptionValue("trigger-process-type", "30 seconds")
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)
@@ -47,6 +48,7 @@ object Settings {
       .addOption("m", "kafka-max-offsets-per-trigger", true, "Rate limit on maximum number of offsets processed per trigger interval")
       .addOption("d", "data-dir", true, "Data directory")
       .addOption("t", "temp-dir", true, "Temporary directory")
+      .addOption("tp", "trigger-process-type", true, "trigger-process-type")
 
     val requiredOpts = Seq(
 //      "kafka-topics",

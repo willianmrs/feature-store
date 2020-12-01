@@ -12,9 +12,9 @@ object Settings {
 
   def yarnMode = settings.get.getOptionValue("yarn-mode")
 
-  def inputTable = settings.get.getOptionValue("input-data-tale")
+  def inputTable = settings.get.getOptionValue("input-data-table")
 
-  def outputTable = settings.get.getOptionValue("output-data-tale")
+  def outputTable = settings.get.getOptionValue("output-data-table")
 
   def tempDirectory = settings.get.getOptionValue("temp-dir")
 
@@ -43,11 +43,7 @@ object Settings {
       .addOption("t", "temp-dir", true, "Temporary directory")
 
     val requiredOpts = Seq(
-      "kafka-topics",
-      "yarn-mode",
-      "input-data-table",
-      "output-data-table",
-      "temp-dir"
+
     )
 
     environment = args.head

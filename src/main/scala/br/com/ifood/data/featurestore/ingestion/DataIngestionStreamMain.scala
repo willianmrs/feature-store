@@ -3,13 +3,10 @@ package br.com.ifood.data.featurestore.ingestion
 import java.time.LocalDateTime
 
 import br.com.ifood.data.featurestore.ingestion.config.Settings
-import br.com.ifood.data.featurestore.ingestion.model.Event
-import br.com.ifood.data.featurestore.ingestion.runner.Runner
+import br.com.ifood.data.featurestore.ingestion.parser.ParserFactory
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.streaming.Trigger
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.slf4j.LoggerFactory
 
 
@@ -21,13 +18,19 @@ object DataIngestionStreamMain {
     //    Settings.load(args)
     Settings.load(Array("dev",
       "dev",
-      "-kafka-topics", "kafkaTopics",
+      //      "-kafka-topics", "de-order-events",
+      //      "-kafka-topics", "de-order-status-events",
+      "-kafka-topics", "de-restaurant-events",
+      //      "-kafka-topics", "de-order-status-events",
       "-yarn-mode", "local[*]",
-      "-kafka-brokers", "kafkaBrokers",
-      "-data-dir", "/tmp/ifood/ingestion/data/",
+      "-kafka-brokers", "a49784be7f36511e9a6b60a341003dc2-1378330561.us-east-1.elb.amazonaws.com:9092",
+      "-data-dir", "/tmp/ifood/data/",
       "-temp-dir", "tempDir",
-      "-stream-type", "order"
-    ) )
+      "-trigger-process-type", "5 seconds",
+      //      "-stream-type", "order",
+      //      "-stream-type", "order-status"
+      "-stream-type", "de-restaurant-events"
+    ))
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
 
@@ -39,29 +42,32 @@ object DataIngestionStreamMain {
         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       )
       .getOrCreate()
-
     import spark.implicits._
 
     val df = spark.readStream
-      .format("text")
-      .option("maxFilesPerTrigger", 1)
-      .load("/tmp/ifood/input/")
-      .withColumn("key", lit("1"))
-      .as[Event]
+      .format("kafka")
+      .option("kafka.bootstrap.servers", Settings.kafkaBrokers)
+      .option("subscribe", Settings.kafkaTopics)
+      .option("startingOffsets", "earliest")
+      .option("maxOffsetsPerTrigger", 10000)
+      .load()
+      .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
+      .as[(String, String)]
+      .toDF
+
+    //    val parser = ParserFactory(Settings.streamType, spark)
+    //    val pipeline = parser.parse(df)
 
 
-    val result = Runner(df, spark).start()
-
-    result.writeStream
-//      .outputMode("append")
-//      .format("console")
-//      .start()
+    df.writeStream
       .format("delta")
-      .trigger(Trigger.ProcessingTime("10 seconds"))
+      .trigger(Trigger.ProcessingTime(Settings.triggerProcessTime))
       .outputMode("append")
-      .option("checkpointLocation", s"/tmp/ifood/ingestion/_checkpoints/raw_${Settings.streamType}")
-      .start(s"${Settings.outputDirectory}/raw_${Settings.streamType}")
+      .option("checkpointLocation", s"/tmp/ifood/ingestion/_checkpoints/raw-${Settings.streamType}")
+//      .partitionBy("fs_year", "fs_month", "fs_day")
+      .start(s"${Settings.outputDirectory}/raw-${Settings.streamType}")
       .awaitTermination()
+
 
   }
 }

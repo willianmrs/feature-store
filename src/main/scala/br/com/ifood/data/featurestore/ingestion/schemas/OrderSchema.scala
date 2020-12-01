@@ -1,6 +1,6 @@
 package br.com.ifood.data.featurestore.ingestion.schemas
 
-import org.apache.spark.sql.types.{ArrayType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{ArrayType, DoubleType, StringType, StructField, StructType}
 
 object OrderSchema {
   def valueType = new StructType().add(StructField("value", StringType)).add(StructField("currency", StringType))
@@ -60,9 +60,8 @@ object OrderSchema {
       StructField("order_created_at", StringType, nullable = true),
       StructField("order_id", StringType, nullable = true),
       StructField("order_scheduled", StringType, nullable = true),
-      StructField("order_total_amount", StringType, nullable = true),
+      StructField("order_total_amount", DoubleType, nullable = true),
       StructField("origin_platform", StringType, nullable = true),
-
     )
   )
 }

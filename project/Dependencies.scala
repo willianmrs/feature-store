@@ -25,7 +25,8 @@ object Dependencies {
     "org.apache.spark" %% "spark-streaming" % sparkVersion,
     "org.apache.spark" %% "spark-yarn" % sparkVersion,
     "io.delta" %% "delta-core" % "0.7.0",
-    "commons-cli" % "commons-cli" % "1.2"
+    "commons-cli" % "commons-cli" % "1.2",
+      "org.apache.spark" % "spark-sql-kafka-0-10_2.12" % "3.0.1"
   ).map(_.excludeAll(organizationsToExclude: _*))
 
   val rootDependencies: Seq[sbt.ModuleID] = embeddedDependencies ++ providedDependencies.map(_ % Provided) ++ testsDependencies.map(_ % Test)

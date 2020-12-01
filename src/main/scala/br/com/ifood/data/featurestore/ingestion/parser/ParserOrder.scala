@@ -1,21 +1,22 @@
-package br.com.ifood.data.featurestore.ingestion.runner
+package br.com.ifood.data.featurestore.ingestion.parser
 
-import br.com.ifood.data.featurestore.ingestion.model.Event
 import br.com.ifood.data.featurestore.ingestion.schemas.OrderSchema
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 class ParserOrder(spark: SparkSession) extends Parser {
 
   import spark.implicits._
 
-  def parse(df: Dataset[Event]): DataFrame = {
-    df.select('value)
-    df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
-      .withColumn("data", from_json('value, OrderSchema.getSchema))
+  def parseEvent()(df: DataFrame): DataFrame = {
+    df.withColumn("data", from_json('value, OrderSchema.getSchema))
       .select('key, col("data.*"))
       .withColumn("items", from_json('items, OrderSchema.items))
-      .toDF()
+  }
+
+  def parse(df: DataFrame): DataFrame = {
+    val pipeline = parseEvent() _ andThen parseDate("order_created_at")
+    pipeline(df.toDF)
   }
 }
 
