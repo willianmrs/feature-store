@@ -13,5 +13,6 @@ trait Parser {
       .withColumn("fs_day", dayofmonth(col(columnName)))
       .withColumn("fs_hour", hour(col(columnName)))
       .withColumn("fs_minute", minute(col(columnName)))
+      .withColumn("fs_ingestion_timestamp", current_timestamp())
   }
 }

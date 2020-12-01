@@ -20,8 +20,8 @@ object DataIngestionStreamMain {
       "dev",
       //      "-kafka-topics", "de-order-events",
       //      "-kafka-topics", "de-order-status-events",
-      "-kafka-topics", "de-restaurant-events",
-      //      "-kafka-topics", "de-order-status-events",
+      //      "-kafka-topics", "de-restaurant-events",
+      "-kafka-topics", "de-consumer-events",
       "-yarn-mode", "local[*]",
       "-kafka-brokers", "a49784be7f36511e9a6b60a341003dc2-1378330561.us-east-1.elb.amazonaws.com:9092",
       "-data-dir", "/tmp/ifood/data/",
@@ -29,7 +29,8 @@ object DataIngestionStreamMain {
       "-trigger-process-type", "5 seconds",
       //      "-stream-type", "order",
       //      "-stream-type", "order-status"
-      "-stream-type", "de-restaurant-events"
+      //      "-stream-type", "restaurant-events",
+      "-stream-type", "consumer-events"
     ))
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
@@ -55,16 +56,16 @@ object DataIngestionStreamMain {
       .as[(String, String)]
       .toDF
 
-    //    val parser = ParserFactory(Settings.streamType, spark)
-    //    val pipeline = parser.parse(df)
+    val parser = ParserFactory(Settings.streamType, spark)
+    val pipeline = parser.parse(df)
 
 
-    df.writeStream
+    pipeline.writeStream
       .format("delta")
       .trigger(Trigger.ProcessingTime(Settings.triggerProcessTime))
       .outputMode("append")
       .option("checkpointLocation", s"/tmp/ifood/ingestion/_checkpoints/raw-${Settings.streamType}")
-//      .partitionBy("fs_year", "fs_month", "fs_day")
+      .partitionBy("fs_year", "fs_month", "fs_day")
       .start(s"${Settings.outputDirectory}/raw-${Settings.streamType}")
       .awaitTermination()
 

@@ -29,7 +29,7 @@ object FirstStepAggregatoin {
       "dev",
       "-yarn-mode", "local[*]",
       "-output-data-table", "/tmp/ifood/data/agg3/",
-      "-input-data-table", "/tmp/ifood/data/raw_order/",
+      "-input-data-table", "/tmp/ifood/data/raw-consumer-events/",
       "-temp-dir", "tempDir",
       //      "-trigger-process-type", "30 seconds",
       //      "-stream-type", "order"

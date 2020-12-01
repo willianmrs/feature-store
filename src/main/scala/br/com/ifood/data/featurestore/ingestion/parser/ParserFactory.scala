@@ -7,6 +7,8 @@ object ParserFactory {
     parserType match {
       case "order" => new ParserOrder(spark)
       case "order-status" => new ParserOrderStatus(spark)
+      case "restaurant-events" => new ParserRestaurant(spark)
+      case "consumer-events" => new ParserConsummer(spark)
       case r => throw new NotImplementedError(s"Runner type $r not implemented.")
     }
   }
