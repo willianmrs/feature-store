@@ -10,5 +10,4 @@ case class Order(key: String,
                  fs_month: Int,
                  fs_day: Int,
                  fs_hour: Int) {
-
 }

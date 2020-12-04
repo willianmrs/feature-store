@@ -18,19 +18,19 @@ object DataIngestionStreamMain {
     //    Settings.load(args)
     Settings.load(Array("dev",
       "dev",
-      //      "-kafka-topics", "de-order-events",
+      "-kafka-topics", "de-order-events",
       //      "-kafka-topics", "de-order-status-events",
       //      "-kafka-topics", "de-restaurant-events",
-      "-kafka-topics", "de-consumer-events",
+      //      "-kafka-topics", "de-consumer-events",
       "-yarn-mode", "local[*]",
       "-kafka-brokers", "a49784be7f36511e9a6b60a341003dc2-1378330561.us-east-1.elb.amazonaws.com:9092",
       "-data-dir", "/tmp/ifood/data/",
       "-temp-dir", "tempDir",
       "-trigger-process-type", "5 seconds",
-      //      "-stream-type", "order",
-      //      "-stream-type", "order-status"
+      "-stream-type", "order-events",
+      //      "-stream-type", "order-status-events"
       //      "-stream-type", "restaurant-events",
-      "-stream-type", "consumer-events"
+      //      "-stream-type", "consumer-events"
     ))
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
@@ -50,7 +50,7 @@ object DataIngestionStreamMain {
       .option("kafka.bootstrap.servers", Settings.kafkaBrokers)
       .option("subscribe", Settings.kafkaTopics)
       .option("startingOffsets", "earliest")
-      .option("maxOffsetsPerTrigger", 10000)
+      .option("maxOffsetsPerTrigger", 100)
       .load()
       .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
       .as[(String, String)]
@@ -64,11 +64,9 @@ object DataIngestionStreamMain {
       .format("delta")
       .trigger(Trigger.ProcessingTime(Settings.triggerProcessTime))
       .outputMode("append")
-      .option("checkpointLocation", s"/tmp/ifood/ingestion/_checkpoints/raw-${Settings.streamType}")
+      .option("checkpointLocation", s"/tmp/ifood/metadata/ingestion/_checkpoints/${Settings.streamType}")
       .partitionBy("fs_year", "fs_month", "fs_day")
-      .start(s"${Settings.outputDirectory}/raw-${Settings.streamType}")
+      .start(s"${Settings.outputDirectory}/ingestion/${Settings.streamType}")
       .awaitTermination()
-
-
   }
 }

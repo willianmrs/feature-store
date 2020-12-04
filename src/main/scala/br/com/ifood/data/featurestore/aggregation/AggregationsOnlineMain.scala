@@ -3,7 +3,7 @@ package br.com.ifood.data.featurestore.aggregation
 import java.time.LocalDateTime
 
 import br.com.ifood.data.featurestore.aggregation.config.Settings
-import br.com.ifood.data.featurestore.aggregation.parser.ParserOrder
+import br.com.ifood.data.featurestore.aggregation.pipeline.ParserOrder
 import io.delta.tables._
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -19,7 +19,7 @@ object AggregationsOnlineMain {
       "dev",
       "-yarn-mode", "local[*]",
       "-output-data-table", "/tmp/ifood/data/agg3/",
-      "-input-data-table", "/tmp/ifood/data/raw_order/",
+      "-input-data-table", "/tmp/ifood/data/ingestion/order-events",
       "-temp-dir", "tempDir",
       //      "-trigger-process-type", "30 seconds",
       //      "-stream-type", "order"
@@ -58,11 +58,10 @@ object AggregationsOnlineMain {
       processor.parse
       .writeStream
       .format("delta")
-      .foreachBatch(upsertToDelta _)
+//      .foreachBatch(upsertToDelta _)
       .outputMode("append")
       .option("checkpointLocation", s"/tmp/ifood/agg/_checkpoints/first_agg3")
       .start(Settings.outputTable)
         .awaitTermination()
   }
-
 }

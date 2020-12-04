@@ -1,47 +1,48 @@
-package br.com.ifood.data.featurestore.aggregation.parser
+package br.com.ifood.data.featurestore.aggregation.pipeline
 
 import br.com.ifood.data.featurestore.aggregation.model.{FeatureStoreTable, Order}
 import org.apache.spark.sql.functions.{col, current_timestamp}
 import org.apache.spark.sql.streaming.{GroupState, GroupStateTimeout, OutputMode}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-class ParserOrder(df: DataFrame, spark: SparkSession) extends Parser {
+class ParserOrder(df: DataFrame, spark: SparkSession) extends Base with Serializable {
 
   import spark.implicits._
 
-  def CalculateAggregations(id: (String, Int, Int, Int), newEvents: Seq[Order], events: List[Order]): (FeatureStoreTable, List[Order]) = {
-    val allEvents = newEvents ++ events
-    Map()
+  def updateFeatures(fs: FeatureStoreTable, event: Order): FeatureStoreTable = {
     val features = Map(
-      "total-order-total-1h" -> allEvents.map(_.totalAmount).sum.toString,
-      "total-order-count-1h" -> allEvents.length.toString,
-      "total-order-min-1h" -> allEvents.map(_.totalAmount).min.toString,
-      "total-order-max-1h" -> allEvents.map(_.totalAmount).max.toString,
-      "total-order-mean-1h" -> (allEvents.map(_.totalAmount).sum / allEvents.map(_.totalAmount).sum).toString,
+      "order-total-order-count-1d" -> (fs.features("order-total-order-count-1d") + 1),
+      "order-total-order-sum-1d" -> (fs.features("order-total-order-sum-1d") + event.totalAmount),
     )
-
-    val event = newEvents.head
-    val featureStore = FeatureStoreTable(id._1, event.fs_year, event.fs_month, event.fs_day, event.fs_hour, features)
-
-    (featureStore, events)
+    fs.copy(features = features)
   }
 
-  def calculateFeatures(id: (String, Int, Int, Int), events: Iterator[Order], state: GroupState[List[Order]]): Iterator[FeatureStoreTable] = {
+  def CalculateAggregations(id: (String, Int, Int, Int), newEvents: Seq[Order], features: FeatureStoreTable): FeatureStoreTable = {
+    newEvents.foldLeft(features)((f, event) => {
+      updateFeatures(f, event)
+    })
+  }
 
+  def calculateFeatures(id: (String, Int, Int, Int), events: Iterator[Order], state: GroupState[FeatureStoreTable]): Iterator[FeatureStoreTable] = {
+    val (identifier, year, month, day) = id
     val newEvents = events.toSeq
     if (newEvents.isEmpty) return Iterator.empty
     println(s"Customer ID: $id")
     println(s"Input Data (${newEvents.size}):")
     println(s"State: $state")
-    val initialState = List[Order]()
+    val initialState = FeatureStoreTable(identifier, year, month, day, 0, Map(
+      "order-total-order-count-1d" -> 0,
+      "order-total-order-sum-1d" -> 0
+    ))
+
     val oldState = state.getOption.getOrElse(initialState)
-    val (featureTable, newState) = CalculateAggregations(id, newEvents, oldState)
-    state.update(newState)
+    val featureTable = CalculateAggregations(id, newEvents, oldState)
+    state.update(featureTable)
     Iterator(featureTable)
   }
 
 
-  override def parse: DataFrame = {
+  def parse: DataFrame = {
     val result = df.withColumn("timestamp", current_timestamp())
       .where(col("customer_id").isNotNull)
       .select(
