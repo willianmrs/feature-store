@@ -13,14 +13,6 @@ object AggregationsOnlineMain {
   private lazy val logger = LoggerFactory.getLogger(this.getClass)
 
   def createAllTablesIfNotExist(spark: SparkSession): Unit = {
-    logger.info("-------------------------------")
-    logger.info("-------------------------------")
-    logger.info("-------------------------------")
-    logger.info("-------------------------------")
-    logger.info("-------------------------------")
-    logger.info("-------------------------------")
-    logger.info("-------------------------------")
-
     if (!DeltaTable.isDeltaTable(Settings.outputTable)) {
       import spark.implicits._
       Seq(
@@ -41,7 +33,6 @@ object AggregationsOnlineMain {
       "-watermark", "1 seconds",
       "-time-field", "fs_ingestion_timestamp",
     ))
-    Settings.outputTable
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
 

@@ -1,13 +1,12 @@
-package br.com.ifood.data.featurestore.ingestion
-
-import java.io.File
-import java.nio.file.{Files, Paths}
+package br.com.ifood.data.featurestore
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.flatspec.AnyFlatSpecLike
 import org.scalatest.matchers.should.Matchers._
 
+import java.io.File
+import java.nio.file.{Files, Paths}
 import scala.io.Source
 
 class CustomFlatSpec extends AnyFlatSpecLike with BeforeAndAfterAll {

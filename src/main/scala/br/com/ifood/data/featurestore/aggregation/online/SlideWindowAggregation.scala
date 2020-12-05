@@ -1,4 +1,4 @@
-package br.com.ifood.data.featurestore.aggregation.slidewindow
+package br.com.ifood.data.featurestore.aggregation.online
 
 import br.com.ifood.data.featurestore.aggregation.config.Settings
 import org.apache.spark.sql.functions.{col, expr, lit, window}
@@ -27,12 +27,12 @@ class SlideWindowAggregation(spark: SparkSession) {
   def agg(df: DataFrame): DataFrame = {
     val aggregations = getAllExpr.map(expr)
     val agg = df.groupBy(
-      col(Settings.aggField),
+      col(Settings.groupByField),
       window(col(Settings.timeField), Settings.windowDuration, Settings.windowSlideDuration)
     )
       .agg(aggregations.head, aggregations.tail: _*)
 
-    joinColumnsIntoMap(agg, "features", List(Settings.aggField, "window"))
+    joinColumnsIntoMap(agg, "features", List(Settings.groupByField, "window"))
 
   }
 }

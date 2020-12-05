@@ -7,7 +7,7 @@ import org.apache.spark.sql.types.StructType
 import org.scalatest.flatspec.AnyFlatSpecLike
 import org.scalatest.matchers.should.Matchers._
 
-class RunnerTest extends AnyFlatSpecLike with DataFrameSuiteBase  {
+class AggregatorProcessorTest extends AnyFlatSpecLike with DataFrameSuiteBase  {
 
   it should "test stream" in {
 //    import spark.implicits._

@@ -1,4 +1,4 @@
-package br.com.ifood.data.featurestore.aggregation.slidewindow
+package br.com.ifood.data.featurestore.aggregation.online
 
 import java.time.LocalDateTime
 
@@ -7,7 +7,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
-object SlideWindowAggregationsMain {
+object AggregationsOnlineMain {
   private lazy val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
@@ -23,7 +23,6 @@ object SlideWindowAggregationsMain {
       "-time-field", "fs_ingestion_timestamp",
       "-agg-field", "customer_id",
     ))
-    Settings.outputTable
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
 

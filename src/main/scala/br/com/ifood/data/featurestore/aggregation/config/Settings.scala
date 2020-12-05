@@ -24,7 +24,7 @@ object Settings {
 
   def timeField = settings.get.getOptionValue("time-field")
 
-  def aggField = settings.get.getOptionValue("agg-field")
+  def groupByField = settings.get.getOptionValue("agg-field")
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)

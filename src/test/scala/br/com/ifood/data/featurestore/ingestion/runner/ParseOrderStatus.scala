@@ -1,6 +1,6 @@
 package br.com.ifood.data.featurestore.ingestion.runner
 
-import br.com.ifood.data.featurestore.ingestion.CustomFlatSpec
+import br.com.ifood.data.featurestore.CustomFlatSpec
 import br.com.ifood.data.featurestore.ingestion.config.Settings
 import br.com.ifood.data.featurestore.ingestion.model.Event
 import br.com.ifood.data.featurestore.ingestion.parser.ParserOrder
