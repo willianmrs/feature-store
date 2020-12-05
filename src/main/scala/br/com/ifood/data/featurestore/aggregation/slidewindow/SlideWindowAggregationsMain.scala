@@ -50,7 +50,7 @@ object SlideWindowAggregationsMain {
       .format("delta")
       .outputMode("append")
       .option("mergeSchema", "true")
-      .option("checkpointLocation", s"/tmp/ifood/metadata/aggregations/_checkpoints/${Settings.outputTable}")
+      .option("checkpointLocation", s"/tmp/ifood/metadata/aggregations/_checkpoints/slide-window-agg")
       .start(Settings.outputTable)
       .awaitTermination()
   }
