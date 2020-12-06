@@ -17,16 +17,9 @@ class CustomFlatSpec extends AnyFlatSpecLike with BeforeAndAfterAll {
     tmpDir.delete()
   }
 
-  def setEnv(key: String, value: String): String = {
-    val field = System.getenv().getClass.getDeclaredField("m")
-    field.setAccessible(true)
-    val map = field.get(System.getenv()).asInstanceOf[java.util.Map[java.lang.String, java.lang.String]]
-    map.put(key, value)
-  }
-
   def assertDataFrame(inputDf: DataFrame, expectedDf: DataFrame): Unit = {
-    val input = inputDf.select(inputDf.columns.min, inputDf.columns.sorted.tail: _*)
-    val expected = expectedDf.select(expectedDf.columns.min, expectedDf.columns.sorted.tail: _*)
+    val input = inputDf.select(inputDf.columns.min, inputDf.columns.sorted.tail: _*).drop("fs_ingestion_timestamp")
+    val expected = expectedDf.select(expectedDf.columns.min, expectedDf.columns.sorted.tail: _*).drop("fs_ingestion_timestamp")
 
     input.columns.deep shouldBe expected.columns.deep
 

@@ -10,11 +10,15 @@ assemblyMergeStrategy in assembly := {
     case PathList("com", "esotericsoftware", xs @ _*) => MergeStrategy.last
     case PathList("com", "codahale", xs @ _*) => MergeStrategy.last
     case PathList("com", "yammer", xs @ _*) => MergeStrategy.last
+    case PathList("com", "yammer", xs @ _*) => MergeStrategy.last
+
     case "about.html" => MergeStrategy.rename
     case "META-INF/ECLIPSEF.RSA" => MergeStrategy.last
     case "META-INF/mailcap" => MergeStrategy.last
     case "META-INF/mimetypes.default" => MergeStrategy.last
     case "plugin.properties" => MergeStrategy.last
+    case "git.properties" => MergeStrategy.last
+    case "module-info.class" => MergeStrategy.last
     case "log4j.properties" => MergeStrategy.last
     case x =>
         val oldStrategy = (assemblyMergeStrategy in assembly).value

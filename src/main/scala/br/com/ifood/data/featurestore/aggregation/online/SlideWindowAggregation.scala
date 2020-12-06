@@ -1,19 +1,20 @@
 package br.com.ifood.data.featurestore.aggregation.online
 
 import br.com.ifood.data.featurestore.aggregation.config.Settings
+import br.com.ifood.data.featurestore.aggregation.model.AggCustomAction
 import org.apache.spark.sql.functions.{col, expr, lit, window}
 import org.apache.spark.sql.{DataFrame, SparkSession, functions}
 
 class SlideWindowAggregation(spark: SparkSession) {
   //  TODO: Import those aggragations from a configuration file.
-  def getAllExpr: List[String] = {
+  def getAllExpr: List[AggCustomAction] = {
     List(
-      "COUNT(customer_id) AS `customer-count-1h`",
-      "SUM(CAST(`order_total_amount` as Double)) AS `total-amount-sum-1h`",
-      "MEAN(CAST(`order_total_amount` as Double)) AS `total-amount-mean-1h`",
-      "MIN(CAST(`order_total_amount` as Double)) AS `total-amount-min-1h`",
-      "MAX(CAST(`order_total_amount` as Double)) AS `total-amount-max-1h`",
-      "AVG(CAST(`order_total_amount` as Double)) AS `total-amount-avg-1h`",
+      AggCustomAction("customer-count-1h", expr("COUNT(customer_id)")),
+      AggCustomAction("total-amount-sum-1h", expr("SUM(CAST(`order_total_amount` as Double))")),
+      AggCustomAction("total-amount-mean-1h", expr("MEAN(CAST(`order_total_amount` as Double))")),
+      AggCustomAction("total-amount-min-1h", expr("MIN(CAST(`order_total_amount` as Double))")),
+      AggCustomAction("total-amount-max-1h", expr("MAX(CAST(`order_total_amount` as Double))")),
+      AggCustomAction("total-amount-avg-1h", expr("AVG(CAST(`order_total_amount` as Double))")),
     )
   }
 
@@ -25,7 +26,7 @@ class SlideWindowAggregation(spark: SparkSession) {
   }
 
   def agg(df: DataFrame): DataFrame = {
-    val aggregations = getAllExpr.map(expr)
+    val aggregations = getAllExpr.map(agg => agg.aggregation.as(agg.featureName))
     val agg = df.groupBy(
       col(Settings.groupByField),
       window(col(Settings.timeField), Settings.windowDuration, Settings.windowSlideDuration)

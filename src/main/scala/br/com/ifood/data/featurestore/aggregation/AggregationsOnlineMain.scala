@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 
 import java.time.LocalDateTime
 
+@Deprecated
 object AggregationsOnlineMain {
   private lazy val logger = LoggerFactory.getLogger(this.getClass)
 
@@ -39,7 +40,7 @@ object AggregationsOnlineMain {
     val spark = SparkSession
       .builder()
       .appName(Settings.appName)
-      .master(Settings.yarnMode)
+      .master(Settings.masterMode)
       .config(new SparkConf()
         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       )

@@ -16,12 +16,12 @@ object AggregationsOfflineMain {
   def main(args: Array[String]): Unit = {
     Settings.load(Array("dev",
       "dev",
-      "-yarn-mode", "local[*]",
+      "-master-mode", "local[*]",
       "-input-data-table", "/tmp/ifood/data/ingestion/order-events/",
-      "-output-data-table", "/tmp/ifood/data/aggregations/slide-window/order-agg",
+      "-output-data-table", "/tmp/ifood/data/aggregations/offline/order-agg",
       "-temp-dir", "tempDir",
       "-time-field", "fs_ingestion_timestamp",
-      "-agg-field", "customer_id",
+      "-group-field", "customer_id",
     ))
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
@@ -29,7 +29,7 @@ object AggregationsOfflineMain {
     val spark = SparkSession
       .builder()
       .appName(Settings.appName)
-      .master(Settings.yarnMode)
+      .master(Settings.masterMode)
       .config(new SparkConf()
         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       )

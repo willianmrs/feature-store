@@ -13,17 +13,17 @@ object Dependencies {
   val organizationsToExclude: Seq[ExclusionRule] = testsDependencies.map(_.organization).filter(!_.contains("spark")).map(org => ExclusionRule(organization = org))
 
   val providedDependencies = Seq(
-        "org.apache.spark" %% "spark-core" % sparkVersion
-    //    "org.apache.spark" %% "spark-sql" % sparkVersion,
-    //    "org.apache.spark" %% "spark-streaming" % sparkVersion,
-    //    "org.apache.spark" %% "spark-yarn" % sparkVersion
+        "org.apache.spark" %% "spark-core" % sparkVersion,
+        "org.apache.spark" %% "spark-sql" % sparkVersion,
+        "org.apache.spark" %% "spark-streaming" % sparkVersion,
+        "org.apache.spark" %% "spark-yarn" % sparkVersion
   )
 
   val embeddedDependencies: Seq[ModuleID] = Seq(
-    "org.apache.spark" %% "spark-core" % sparkVersion,
-    "org.apache.spark" %% "spark-sql" % sparkVersion,
-    "org.apache.spark" %% "spark-streaming" % sparkVersion,
-    "org.apache.spark" %% "spark-yarn" % sparkVersion,
+//    "org.apache.spark" %% "spark-core" % sparkVersion,
+//    "org.apache.spark" %% "spark-sql" % sparkVersion,
+//    "org.apache.spark" %% "spark-streaming" % sparkVersion,
+//    "org.apache.spark" %% "spark-yarn" % sparkVersion,
     "io.delta" %% "delta-core" % "0.7.0",
     "commons-cli" % "commons-cli" % "1.2",
       "org.apache.spark" % "spark-sql-kafka-0-10_2.12" % "3.0.1"

@@ -18,7 +18,7 @@ class AggregatorProcessorTest extends AnyFlatSpecLike with DataFrameSuiteBase {
     Settings.load(Array("dev",
       "dev",
       "-time-field", "fs_ingestion_timestamp",
-      "-agg-field", "customer_id",
+      "-group-field", "customer_id",
     ))
     val df = Seq(
       ("1", 10.0, "2020-12-05", List("1", "2", "3", "4")),

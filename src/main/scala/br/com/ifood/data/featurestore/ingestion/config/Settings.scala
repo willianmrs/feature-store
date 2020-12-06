@@ -12,18 +12,16 @@ object Settings {
 
   def kafkaTopics: String = settings.get.getOptionValue("kafka-topics")
 
-  def yarnMode: String = settings.get.getOptionValue("yarn-mode")
+  def masterMode: String = settings.get.getOptionValue("master-mode")
 
   def kafkaBrokers: String = settings.get.getOptionValue("kafka-brokers")
 
   def kafkaMaxOffsetsPerTrigger: Int = settings.get.getOptionValue("kafka-max-offsets-per-trigger", "100").toInt
 
-  def outputDirectory: String = settings.get.getOptionValue("data-dir")
-
-  def tempDirectory: String = settings.get.getOptionValue("temp-dir")
+  def outputDirectory: String = settings.get.getOptionValue("output-dir")
 
   def streamType: String = settings.get.getOptionValue("stream-type", "order")
-  def triggerProcessTime: String = settings.get.getOptionValue("trigger-process-type", "30 seconds")
+  def maxOffsetsPerTrigger: Long = settings.get.getOptionValue("max-offsets-per-trigger", "order").toLong
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)
@@ -43,12 +41,11 @@ object Settings {
       .addOption("a", "app-name", true, "Define current job's name.")
       .addOption("s", "stream-type", true, "Stream type")
       .addOption("k", "kafka-topics", true, "Kafka topics")
-      .addOption("y", "yarn-mode", true, "Yarn mode")
+      .addOption("y", "master-mode", true, "Master mode")
       .addOption("b", "kafka-brokers", true, "Kafka brokers.")
       .addOption("m", "kafka-max-offsets-per-trigger", true, "Rate limit on maximum number of offsets processed per trigger interval")
-      .addOption("d", "data-dir", true, "Data directory")
-      .addOption("t", "temp-dir", true, "Temporary directory")
-      .addOption("tp", "trigger-process-type", true, "trigger-process-type")
+      .addOption("d", "output-dir", true, "Output data directory")
+      .addOption("mopt", "max-offsets-per-trigger", true, "Max Offset per Trigger")
 
     val requiredOpts = Seq(
 //      "kafka-topics",

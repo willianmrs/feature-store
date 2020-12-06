@@ -1,13 +1,12 @@
 package br.com.ifood.data.featurestore.ingestion
 
-import java.time.LocalDateTime
-
 import br.com.ifood.data.featurestore.ingestion.config.Settings
 import br.com.ifood.data.featurestore.ingestion.parser.ParserFactory
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.streaming.Trigger
 import org.slf4j.LoggerFactory
+
+import java.time.LocalDateTime
 
 
 object DataIngestionStreamMain {
@@ -22,12 +21,11 @@ object DataIngestionStreamMain {
       //      "-kafka-topics", "de-order-status-events",
       //      "-kafka-topics", "de-restaurant-events",
       //      "-kafka-topics", "de-consumer-events",
-      "-yarn-mode", "local[*]",
+      "-master-mode", "local[*]",
       "-kafka-brokers", "a49784be7f36511e9a6b60a341003dc2-1378330561.us-east-1.elb.amazonaws.com:9092",
-      "-data-dir", "/tmp/ifood/data/",
-      "-temp-dir", "tempDir",
-      "-trigger-process-type", "5 seconds",
+      "-output-dir", "/tmp/ifood/data/",
       "-stream-type", "order-events",
+      "-max-offsets-per-trigger", "100",
       //      "-stream-type", "order-status-events"
       //      "-stream-type", "restaurant-events",
       //      "-stream-type", "consumer-events"
@@ -38,7 +36,7 @@ object DataIngestionStreamMain {
     val spark = SparkSession
       .builder()
       .appName(Settings.appName)
-      .master(Settings.yarnMode)
+      .master(Settings.masterMode)
       .config(new SparkConf()
         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       )
@@ -62,7 +60,6 @@ object DataIngestionStreamMain {
 
     pipeline.writeStream
       .format("delta")
-      .trigger(Trigger.ProcessingTime(Settings.triggerProcessTime))
       .outputMode("append")
       .option("checkpointLocation", s"/tmp/ifood/metadata/ingestion/_checkpoints/${Settings.streamType}")
       .partitionBy("fs_year", "fs_month", "fs_day")

@@ -10,7 +10,7 @@ object Settings {
 
   def appName = settings.get.getOptionValue("app-name", "feature-store-data-ingest")
 
-  def yarnMode = settings.get.getOptionValue("yarn-mode")
+  def masterMode = settings.get.getOptionValue("master-mode")
 
   def inputTable = settings.get.getOptionValue("input-data-table")
 
@@ -24,7 +24,7 @@ object Settings {
 
   def timeField = settings.get.getOptionValue("time-field")
 
-  def groupByField = settings.get.getOptionValue("agg-field")
+  def groupByField = settings.get.getOptionValue("group-field")
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)
@@ -43,7 +43,7 @@ object Settings {
     val options = new Options()
       .addOption("a", "app-name", true, "Define current job's name.")
       .addOption("k", "kafka-topics", true, "Kafka topics")
-      .addOption("y", "yarn-mode", true, "Yarn mode")
+      .addOption("y", "master-mode", true, "Master mode")
       .addOption("b", "kafka-brokers", true, "Kafka brokers.")
       .addOption("m", "kafka-max-offsets-per-trigger", true, "Rate limit on maximum number of offsets processed per trigger interval")
       .addOption("it", "input-data-table", true, "Input data table")
@@ -53,7 +53,7 @@ object Settings {
       .addOption("wsd", "window-slide-duration", true, "window-slide-duration")
       .addOption("w", "watermark", true, "watermark")
       .addOption("tf", "time-field", true, "time field")
-      .addOption("af", "agg-field", true, "Aggregation Field")
+      .addOption("af", "group-field", true, "Aggregation Field")
 
     val requiredOpts = Seq(
 
