@@ -14,22 +14,7 @@ object DataIngestionStreamMain {
   private lazy val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
-    //    Settings.load(args)
-    Settings.load(Array("dev",
-      "dev",
-      "-kafka-topics", "de-order-events",
-      //      "-kafka-topics", "de-order-status-events",
-      //      "-kafka-topics", "de-restaurant-events",
-      //      "-kafka-topics", "de-consumer-events",
-      "-master-mode", "local[*]",
-      "-kafka-brokers", "a49784be7f36511e9a6b60a341003dc2-1378330561.us-east-1.elb.amazonaws.com:9092",
-      "-output-dir", "/tmp/ifood/data/",
-      "-stream-type", "order-events",
-      "-max-offsets-per-trigger", "100",
-      //      "-stream-type", "order-status-events"
-      //      "-stream-type", "restaurant-events",
-      //      "-stream-type", "consumer-events"
-    ))
+        Settings.load(args)
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
 

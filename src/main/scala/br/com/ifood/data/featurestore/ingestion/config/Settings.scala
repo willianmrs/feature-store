@@ -39,6 +39,7 @@ object Settings {
 
     val options = new Options()
       .addOption("a", "app-name", true, "Define current job's name.")
+      .addOption("s", "master-mode", true, "Master Mode")
       .addOption("s", "stream-type", true, "Stream type")
       .addOption("k", "kafka-topics", true, "Kafka topics")
       .addOption("y", "master-mode", true, "Master mode")

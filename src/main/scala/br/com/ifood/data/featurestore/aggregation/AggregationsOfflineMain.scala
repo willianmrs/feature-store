@@ -14,15 +14,7 @@ object AggregationsOfflineMain {
   private lazy val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
-    Settings.load(Array("dev",
-      "dev",
-      "-master-mode", "local[*]",
-      "-input-data-table", "/tmp/ifood/data/ingestion/order-events/",
-      "-output-data-table", "/tmp/ifood/data/aggregations/offline/order-agg",
-      "-temp-dir", "tempDir",
-      "-time-field", "fs_ingestion_timestamp",
-      "-group-field", "customer_id",
-    ))
+    Settings.load(args)
 
     logger.info(s"JobName: ${Settings} started at: ${LocalDateTime.now}")
 

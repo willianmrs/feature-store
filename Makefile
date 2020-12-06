@@ -21,3 +21,4 @@ build-all: build copy-artefacts docker-build
 
 docker-run:
 	docker run -it --net host --rm=true -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/ifood/project -p 8888:8888 spark3docker
+
