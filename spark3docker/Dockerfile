@@ -76,4 +76,5 @@ ADD conf/hadoop-local /home/ifood/conf/hadoop-local
 RUN sudo chmod +x /home/ifood/bin/*
 RUN sudo mkdir /artefacts/
 ADD ./artefact /artefacts
+RUN mkdir /tmp/ifood
 CMD [ "/home/ifood/start.sh" ]
