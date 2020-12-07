@@ -170,9 +170,9 @@ The publisher could be in batches, for a specific proposals, or stream to online
 
 # How to Run
 
-To run the project, the steps to compiling the project and build the docker were defined in the make file. To execute it run `make build-all`. This command will build the `.jar` and the docker. It also will create a tag called `spark3docker` that can be executed using `make docker-run`. 
+To run the project, the steps to compiling the project and build the docker were defined in the make file. To execute it run `make build-all`. This command will build the `.jar` and the docker. It also will create a tag called `spark3docker` that can be executed using `make docker-run`.
 
-To be easier to run an example, inside the docker has a script called `[run-all.sh](http://run-all.sh)` that starts progressively the streamings, and after 3 minutes, starts the *Offline Aggregation.* To stop all streamings, run `stop-all.sh`. The script runs the following spark-submits:
+To be easier to run an example, inside the docker has a script called `[run-all.sh](http://run-all.sh)` that starts progressively the streamings, and after 3 minutes, starts the *Offline Aggregation.* The script runs the following spark-submits:
 
 - Start the ingest, class DataIngestionStreamMain.
 - Start the Aggregation online, class AggregationsOnlineMain.
@@ -180,6 +180,8 @@ To be easier to run an example, inside the docker has a script called `[run-all.
 - Start the publisher, class PublisherMain.
 
 In the example, all the data is been saving into `/tmp/ifood` directory. To read it, the user can use a spark-shell with delta dependency `spark-shell --packages "io.delta:delta-core_2.12:0.7.0"`. Alternatively, users can use the Jupyter notebook that is available at the address: `localhost:8888` where the data can be read in `parquet` format.
+
+To stop all streamings, run `stop-all.sh`.
 
 # Conclusion
 
