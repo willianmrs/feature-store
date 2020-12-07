@@ -166,3 +166,5 @@ schemas.location
 # End of https://www.gitignore.io/api/sbt,linux,scala,eclipse,intellij
 
 .bsp/
+
+spark3docker/artefact/
