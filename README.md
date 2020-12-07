@@ -44,7 +44,15 @@ All ingestion jobs are Structured Streaming. They read a specific Kafka topic, p
 
 The following parameters are used to configure the job:
 
-[Job Parameters](https://www.notion.so/4217ee90f5df46908e0c36426b1066b8)
+| Parameter     | Description                                                                                            | Default                   |
+|---------------|--------------------------------------------------------------------------------------------------------|---------------------------|
+| app-name      | The application name                                                                                   | feature-store-data-ingest |
+| master-mode   | The master URL for the cluster. See Master URL docs                                                    | local[*]                  |
+| kafka-brokers | Kafka address                                                                                          |                           |
+| kafka-topics  | Kafka Topics                                                                                           |                           |
+| data-dir      | Output data directory                                                                                  |                           |
+| stream-type   | Streaming type. Available are: order-events, order-status-event, restaurant-events and consumer-events |                           |
+| Parameter     | Description                                         | Default                         |
 
 All data are partitioned by `year`, `month`, `day`. At first moment, it only accepts those fields but it can be easily added in the next versions. The data field used to generate the partition filters are configured inside each parser type.
 
@@ -65,9 +73,21 @@ Thinking in those two types, we have two types of aggregators, the first we name
 
 To process offline features we use Spark batch over a specific time window to calculate the aggregations. The kinds of aggregations are limited to [spark functions](https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#aggregate-functions). And for each aggregation, you can determine a sub-window to calculate the feature. For instance, the general time window is the last 30 days of data, so you can calculate your feature based on a period of time passing a parameter to the aggregation function.
 
-Each job can execute aggregations over a unique data source, and load data from a start date and end-date (passed throw job parameters). Inside the job, you can set the sub-window using the `period` parameter of `AgActions`. 
+Each job can execute aggregations over a unique data source, and load data from a start date and end-date (passed throw job parameters). Inside the job, you can set the sub-window using the `period` parameter of `AgActions`.
+The job parameters are:
 
-[Job Parameters](https://www.notion.so/5f6a3afc22ee44ca8f289283ed86367a)
+| Parameter     | Description                                         | Default                         |
+|---------------|-----------------------------------------------------|---------------------------------|
+| app-name      | The application name                                | feature-store-data-aggregations |
+| master-mode   | The master URL for the cluster. See Master URL docs | local[*]                        |
+| kafka-brokers | Kafka address                                       |                                 |
+| kafka-topics  | Kafka Topics                                        |                                 |
+| input-table   | Path to input table                                 |                                 |
+| output-table  | Path to output table                                |                                 |
+| agg-field     | Field to be used as group by key                    |                                 |
+| time-field    | Field to be used as time filter                     |                                 |
+| start-date    | Start date: Ex. 2019-12-05                          |                                 |
+| end-date      | End date: Ex. 2020-12-05                            |                                 |
 
 When started, the job will read data from `input-table` filtered by (`time-field` >`start-date`) and (`time-field` < `end-date`) and will group by `group-field`. After that, it will apply all configured aggregations. 
 
@@ -75,17 +95,38 @@ Today those aggregations can be one of these two types:
 
 - **AggAction**: This type is easier to configure but is limited to [spark aggregate functions](https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#aggregate-functions), like `sum` , `avg`, `mean`, etc. The definition of this type are:
 
-[AggAction](https://www.notion.so/d3b937d5ba76476bbd6c253cded4266b)
+| Field       | Description                                     |
+|-------------|-------------------------------------------------|
+| featureName | Name of the output feature. Ex `order-count-1d` |
+| period      | Is the sub-window parameter. Ex: 3 days, 5 days |
+| field       | Field name that the agg will be applied         |
+| operation   | Type of aggregation.                            |
 
 - **AggCustomAction**: This type is more generic, but it has a more complex implementation since you have to write the entire expression in a string to be evaluated by the spark.
 
-[AggCustomAction](https://www.notion.so/5a8a5720339641a98419c95850940a8f)
+| Field       | Description                                     |
+|-------------|-------------------------------------------------|
+| featureName | Name of the output feature. Ex `order-count-1d` |
+| operation   | Type of aggregation.                            |
 
 ### Online Features
 
 To process Online Features we are using structured streaming and processing over a window with a slide duration. Different from the offline features, in the online the window is fixed per streaming. In other words, for each source and time window we have different streaming.
 
-[Job Parameters](https://www.notion.so/950e97fe6d6e442c901a9c9082eef800)
+| Parameter             | Description                                                                             | Default             |
+|-----------------------|-----------------------------------------------------------------------------------------|---------------------|
+| app-name              | The application name                                                                    | feature-store-data- |
+| aggregations          | The aggregation expresed in SQL using `expr` function.                                  |                     |
+| master-mode           | The master URL for the cluster. See Master URL docs                                     | local[*]            |
+| kafka-brokers         | Kafka address                                                                           |                     |
+| kafka-topics          | Kafka Topics                                                                            |                     |
+| input-table           | Path to input table                                                                     |                     |
+| output-table          | Path to output table                                                                    |                     |
+| watermark             | Watermark allows us to drop old states and deal with old data                           |                     |
+| time-field            | Field to be used as time filter                                                         |                     |
+| agg-field             | Field to be used as group by key                                                        |                     |
+| window-duration       | The size of the time window used in each aggregation                                    |                     |
+| window-slide-duration | The time between two aggregations, if smaller than window-duration, we have an overlap. |                     |
 
 To express the features, we use the same objects of Offline Aggregations, `AggAction` and `AggCustomAction`.  But in the case of `AggAction` the field `period` is ignored. 
 
@@ -97,7 +138,13 @@ The publishers are jobs that can save in multiples destinations like Kafka, rela
 
 For example, think in the scenario where we have to read from a Redis database, the Spark integration exists but is limited, so we could put the data into a Kafka topic and consume it using an application in Go to consumes and write in a specific format into a Redis database that is consumed by models in a production environment. Or we could simply use a publisher to send the data to less expensive storage like S3 or other-like.  
 
-[Job Parameters](https://www.notion.so/09ee12860d1448b4a67647488a050d3e)
+| Parameter      | Description                                         | Default  |
+|----------------|-----------------------------------------------------|----------|
+| master-mode    | The master URL for the cluster. See Master URL docs | local[*] |
+| app-name       | Application name                                    |          |
+| publisher-type | Publisher Type. Available: historical               |          |
+| input-table    | Input table path                                    |          |
+| output-table   | Ouput table path                                    |          |
 
 The publisher could be in batches, for a specific proposals, or stream to online features. The aggregations are been saving in `delta` format, which allows us to build both kinds of models.
 
