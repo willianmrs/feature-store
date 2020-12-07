@@ -15,7 +15,12 @@ object Settings {
   def inputDirectory: String = settings.get.getOptionValue("input-table")
   def outputDirectory: String = settings.get.getOptionValue("output-table")
 
-  def publisherType: String = settings.get.getOptionValue("publisher-type", "historical")
+  def publisherType: String = settings.get.getOptionValue("publisher-type", "mysql")
+
+  def jdbcHostname:String = settings.get.getOptionValue("jdbc-hostname")
+  def jdbcPort:String = settings.get.getOptionValue("jdbc-port")
+  def jdbcDatabase:String = settings.get.getOptionValue("jdbc-database")
+  def inputTable:String = settings.get.getOptionValue("input table")
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)
@@ -36,6 +41,10 @@ object Settings {
       .addOption("s", "publisher-type", true, "Publisher type")
       .addOption("i", "input-table", true, "Output data directory")
       .addOption("d", "output-table", true, "Output data directory")
+      .addOption("jh", "jdbc-hostname", true, "jdbc hostname")
+      .addOption("jp", "jdbc-port", true, "jdbc port")
+      .addOption("jd", "jdbc-database", true, "jdbc database")
+      .addOption("it", "input-table", true, "input-table")
 
     val requiredOpts = Seq(
 //      "kafka-topics",
