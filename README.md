@@ -2,7 +2,7 @@
 
 # Introduction
 
-The goal of this project is to build a platform to create, store, and serve features for machine learning algorithms and business intelligence tools. For that, we used Spark as our main tool for processing data. It supports batch and stream pipelines, which are key features to build more reliable, scalable projects. Besides that, Spark is a swiss army knife (check this term, maybe you need a more formal one) framework that offers a complete and well-established solution for distributed computing.
+The goal of this project is to build a platform to create, store, and serve features for machine learning algorithms and business intelligence tools. For that, we used Spark as our main tool for processing data. It supports batch and stream pipelines, which are key features to build more reliable, scalable projects. Besides that, Spark is a swiss army knife framework that offers a complete and well-established solution for distributed computing.
 
 # Feature Store
 
