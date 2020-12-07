@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -it --net host --rm=true -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/ifood/project -p 8888:8888 ifood

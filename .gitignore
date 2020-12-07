@@ -10,6 +10,8 @@
 
 .metadata
 bin/
+!spark3docker/bin
+!spark3docker/scripts/bin
 tmp/
 *.tmp
 *.bak
