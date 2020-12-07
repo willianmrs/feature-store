@@ -2,7 +2,7 @@
 
 # Introduction
 
-The goal of this project is to build a platform to create, store, and serve features for machine learning algorithms and business intelligence tools. For that, we used Spark as our main tool for processing data. It supports batch and stream pipelines, which are key features to build more reliable, scalable projects. Besides that, Spark is a swiss army knife (check this term, maybe you need a more formal one) framework that offers a complete and well-established solution for distributed computing.
+The goal of this project is to build a platform to create, store, and serve features for machine learning algorithms and business intelligence tools. For that, we used Spark as our main tool for processing data. It supports batch and stream pipelines, which are key features to build more reliable, scalable projects. Besides that, Spark is a swiss army knife framework that offers a complete and well-established solution for distributed computing.
 
 # Feature Store
 
@@ -13,8 +13,6 @@ Feature store allows teams to share, discover, and use a highly curated set of f
 The project is structured in three parts, Ingest, Aggregations, and Publishers. Image 1 depicts the flow of these three parts.
 
 ![docs/images/Untitled_Diagram.svg](docs/images/Untitled_Diagram.svg)
-
-1. Three main steps of the feature store
 
 A brief description of each part is presented below:
 
