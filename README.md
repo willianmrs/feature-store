@@ -14,8 +14,6 @@ The project is structured in three parts, Ingest, Aggregations, and Publishers. 
 
 ![docs/images/Untitled_Diagram.svg](docs/images/Untitled_Diagram.svg)
 
-1. Three main steps of the feature store
-
 A brief description of each part is presented below:
 
 - **Ingest**: The ingest is responsible for receiving the data from external sources and persist it in permanent storage, Also, it is responsible for the first parser of the data since, from some sources, the data can come in a binary format, so saving it in a more digestible format, like *parquet* or *delta*.
