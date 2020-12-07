@@ -25,12 +25,12 @@ object PublisherMain {
       .getOrCreate()
 
 
-    val df = spark.readStream
+    val df = spark.read
       .format("delta")
       .option("ignoreDeletes", "true")
       .load(s"${Settings.inputTable}")
 
-    val publisher = PublisherFactory.apply(Settings.publisherType, spark).process(df)
+    val publisher = PublisherFactory(Settings.publisherType, spark).process(df)
 
     publisher.save()
   }

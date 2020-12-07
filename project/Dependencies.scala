@@ -20,10 +20,6 @@ object Dependencies {
   )
 
   val embeddedDependencies: Seq[ModuleID] = Seq(
-    //    "org.apache.spark" %% "spark-core" % sparkVersion,
-    //    "org.apache.spark" %% "spark-sql" % sparkVersion,
-    //    "org.apache.spark" %% "spark-streaming" % sparkVersion,
-    //    "org.apache.spark" %% "spark-yarn" % sparkVersion,
     "io.delta" %% "delta-core" % "0.7.0",
     "commons-cli" % "commons-cli" % "1.2",
     "org.apache.spark" % "spark-sql-kafka-0-10_2.12" % "3.0.1",

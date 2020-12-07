@@ -12,15 +12,17 @@ object Settings {
 
   def masterMode: String = settings.get.getOptionValue("master-mode")
 
-  def inputDirectory: String = settings.get.getOptionValue("input-table")
   def outputDirectory: String = settings.get.getOptionValue("output-table")
 
   def publisherType: String = settings.get.getOptionValue("publisher-type", "mysql")
 
-  def jdbcHostname:String = settings.get.getOptionValue("jdbc-hostname")
-  def jdbcPort:String = settings.get.getOptionValue("jdbc-port")
-  def jdbcDatabase:String = settings.get.getOptionValue("jdbc-database")
-  def inputTable:String = settings.get.getOptionValue("input table")
+  def jdbcHostname: String = settings.get.getOptionValue("jdbc-hostname")
+
+  def jdbcPort: String = settings.get.getOptionValue("jdbc-port")
+
+  def jdbcDatabase: String = settings.get.getOptionValue("jdbc-database")
+
+  def inputTable: String = settings.get.getOptionValue("input-table")
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)
@@ -39,7 +41,7 @@ object Settings {
     val options = new Options()
       .addOption("a", "app-name", true, "Define current job's name.")
       .addOption("s", "publisher-type", true, "Publisher type")
-      .addOption("i", "input-table", true, "Output data directory")
+      .addOption("mm", "master-mode", true, "Master Mode>")
       .addOption("d", "output-table", true, "Output data directory")
       .addOption("jh", "jdbc-hostname", true, "jdbc hostname")
       .addOption("jp", "jdbc-port", true, "jdbc port")
@@ -47,12 +49,12 @@ object Settings {
       .addOption("it", "input-table", true, "input-table")
 
     val requiredOpts = Seq(
-//      "kafka-topics",
-//      "stream-type",
-//      "yarn-mode",
-//      "kafka-brokers",
-//      "data-dir",
-//      "temp-dir"
+      //      "kafka-topics",
+      //      "stream-type",
+      //      "yarn-mode",
+      //      "kafka-brokers",
+      //      "data-dir",
+      //      "temp-dir"
     )
 
     environment = args.head

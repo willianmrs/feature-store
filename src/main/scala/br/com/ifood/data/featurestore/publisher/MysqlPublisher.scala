@@ -14,8 +14,14 @@ class MysqlPublisher(spark: SparkSession) extends Publisher {
   }
 
   override def save(): Unit = {
-    val df = spark.table("...")
     val jdbcUrl = s"jdbc:mysql://${Settings.jdbcHostname}:${Settings.jdbcPort}/${Settings.jdbcDatabase}"
-    df.coalesce(10).write.mode("append").jdbc(jdbcUrl, "product_mysql", new Properties())
+    val properties = new Properties()
+    //properties.put
+    properties.put("password", "root")
+    properties.put("user", "root")
+    dataFrame.write
+      .mode("overwrite") // <--- Overwrite the existing table
+      .jdbc(jdbcUrl, "order_agg", properties)
+
   }
 }

@@ -25,7 +25,10 @@ object Settings {
   def timeField = settings.get.getOptionValue("time-field")
 
   def groupByField = settings.get.getOptionValue("group-field")
-  def baseDate = settings.get.getOptionValue("base-date")
+
+  def startDate = settings.get.getOptionValue("start-date")
+
+  def endDate = settings.get.getOptionValue("end-date")
 
   def validateLoadedParams(options: Options, mandatoryParams: Seq[String], tailArgs: Array[String]): Option[CommandLine] = {
     val parsed = new BasicParser().parse(options, tailArgs)
@@ -55,7 +58,8 @@ object Settings {
       .addOption("w", "watermark", true, "watermark")
       .addOption("tf", "time-field", true, "time field")
       .addOption("af", "group-field", true, "Aggregation Field")
-      .addOption("bd", "base-date", true, "Base date to process aggregations")
+      .addOption("sd", "start-date", true, "Start date to process aggregations")
+      .addOption("ed", "end-date", true, "End date to process aggregations")
 
     val requiredOpts = Seq(
 

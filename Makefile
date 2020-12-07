@@ -22,3 +22,7 @@ build-all: build copy-artefacts docker-build
 docker-run:
 	docker run -it --net host --rm=true -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/ifood/project -p 8888:8888 spark3docker
 
+run-mysql:
+	docker run --rm --name ifood-ml-engineer -p 3306:3306 -e MYSQL_ROOT_HOST=% -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
+stop-mysql:
+	docker stop ifood-ml-engineer || true && docker rm ifood-ml-engineer || true
